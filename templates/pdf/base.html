@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SEO Report - {{ week_label }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+            @bottom-center {
+                content: "{{ company_name }} | SEO Report | {{ generated_at }}";
+                font-size: 9pt;
+                color: #666;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #1a1a1a;
+        }
+
+        .cover {
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, {{ primary_color }} 0%, #1e40af 100%);
+            color: white;
+            padding: 3cm;
+            margin: -2cm;
+        }
+
+        .cover h1 {
+            font-size: 36pt;
+            font-weight: 700;
+            margin-bottom: 0.5cm;
+            letter-spacing: -0.5pt;
+        }
+
+        .cover .subtitle {
+            font-size: 16pt;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 2cm;
+        }
+
+        .cover .week-label {
+            font-size: 20pt;
+            font-weight: 600;
+            padding: 0.5cm 1.5cm;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            margin-bottom: 1cm;
+        }
+
+        .cover .company {
+            font-size: 14pt;
+            opacity: 0.8;
+            margin-top: 2cm;
+        }
+
+        .section {
+            page-break-before: always;
+            margin-top: 1cm;
+        }
+
+        .section:first-of-type {
+            page-break-before: auto;
+        }
+
+        h2 {
+            font-size: 18pt;
+            color: {{ primary_color }};
+            border-bottom: 3px solid {{ primary_color }};
+            padding-bottom: 0.3cm;
+            margin-bottom: 0.8cm;
+            margin-top: 1cm;
+        }
+
+        h3 {
+            font-size: 14pt;
+            color: #374151;
+            margin-bottom: 0.5cm;
+            margin-top: 0.8cm;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5cm;
+            margin-bottom: 1cm;
+        }
+
+        .metric-card {
+            flex: 1 1 45%;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.6cm;
+            border-left: 4px solid {{ primary_color }};
+        }
+
+        .metric-card.critical {
+            border-left-color: #ef4444;
+        }
+
+        .metric-card.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .metric-card .label {
+            font-size: 9pt;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5pt;
+            margin-bottom: 0.2cm;
+        }
+
+        .metric-card .value {
+            font-size: 20pt;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .metric-card .change {
+            font-size: 10pt;
+            margin-top: 0.2cm;
+        }
+
+        .change.positive { color: #10b981; }
+        .change.negative { color: #ef4444; }
+        .change.neutral { color: #6b7280; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5cm 0;
+            font-size: 10pt;
+        }
+
+        th {
+            background: {{ primary_color }};
+            color: white;
+            padding: 0.3cm 0.4cm;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 0.25cm 0.4cm;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .alert-box {
+            padding: 0.5cm;
+            border-radius: 6px;
+            margin: 0.3cm 0;
+        }
+
+        .alert-box.critical {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-box.warning {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .alert-box .alert-title {
+            font-weight: 600;
+            font-size: 10pt;
+        }
+
+        .alert-box .alert-message {
+            font-size: 9pt;
+            color: #4b5563;
+            margin-top: 0.1cm;
+        }
+
+        .chart-container {
+            text-align: center;
+            margin: 0.8cm 0;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .footer {
+            margin-top: 1cm;
+            padding-top: 0.5cm;
+            border-top: 1px solid #e5e7eb;
+            font-size: 8pt;
+            color: #9ca3af;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="cover">
+        <h1>SEO Report</h1>
+        <div class="subtitle">Weekly Analytics & Performance</div>
+        <div class="week-label">{{ week_label }}</div>
+        <div class="company">{{ company_name }}</div>
+    </div>
+
+    <div class="section">
+        <h2>Dashboard Overview</h2>
+        <div class="dashboard">
+            <div class="metric-card">
+                <div class="label">Organic Sessions</div>
+                <div class="value">{{ summary.organic_sessions | default('—') }}</div>
+                <div class="change {{ summary.sessions_trend_class | default('neutral') }}">
+                    {{ summary.sessions_change | default('0%') }}
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Organic Revenue</div>
+                <div class="value">{{ summary.organic_revenue | default('—') }}</div>
+                <div class="change {{ summary.revenue_trend_class | default('neutral') }}">
+                    {{ summary.revenue_change | default('0%') }}
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Avg. Position</div>
+                <div class="value">{{ summary.avg_position | default('—') }}</div>
+                <div class="change {{ summary.position_trend_class | default('neutral') }}">
+                    {{ summary.position_change | default('0') }}
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="label">Visibility Score</div>
+                <div class="value">{{ summary.visibility_score | default('—') }}</div>
+                <div class="change {{ summary.visibility_trend_class | default('neutral') }}">
+                    {{ summary.visibility_change | default('0%') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Traffic Analysis</h2>
+        <h3>By Cluster</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Cluster</th>
+                    <th>Sessions</th>
+                    <th>Change</th>
+                    <th>Revenue</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in traffic_data %}
+                <tr>
+                    <td>{{ item.cluster_name | default('No cluster') }}</td>
+                    <td>{{ item.sessions | default(0) }}</td>
+                    <td class="{{ 'positive' if item.sessions_change > 0 else 'negative' }}">
+                        {{ "+%.1f%%" % item.sessions_change if item.sessions_change > 0 else "%.1f%%" % item.sessions_change }}
+                    </td>
+                    <td>{{ "%.2f" % item.revenue | default(0) }}</td>
+                    <td class="{{ 'positive' if item.revenue_change > 0 else 'negative' }}">
+                        {{ "+%.1f%%" % item.revenue_change if item.revenue_change > 0 else "%.1f%%" % item.revenue_change }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Positions</h2>
+        <h3>Keywords in Top Positions</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Count</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Top 3</td>
+                    <td>{{ summary.top3_count | default(0) }}</td>
+                    <td class="{{ 'positive' if summary.top3_change > 0 else 'negative' }}">
+                        {{ "+%d" % summary.top3_change if summary.top3_change > 0 else "%d" % summary.top3_change }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Top 10</td>
+                    <td>{{ summary.top10_count | default(0) }}</td>
+                    <td class="{{ 'positive' if summary.top10_change > 0 else 'negative' }}">
+                        {{ "+%d" % summary.top10_change if summary.top10_change > 0 else "%d" % summary.top10_change }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Top 30</td>
+                    <td>{{ summary.top30_count | default(0) }}</td>
+                    <td class="{{ 'positive' if summary.top30_change > 0 else 'negative' }}">
+                        {{ "+%d" % summary.top30_change if summary.top30_change > 0 else "%d" % summary.top30_change }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Alerts</h2>
+        {% if alerts %}
+            {% for alert in alerts %}
+            <div class="alert-box {{ alert.severity }}">
+                <div class="alert-title">
+                    {% if alert.severity == 'critical' %}CRITICAL{% else %}WARNING{% endif %}
+                    {{ alert.alert_type | replace('_', ' ') | title }}
+                </div>
+                <div class="alert-message">{{ alert.message }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #10b981; font-weight: 600;">No alerts this week. Everything looks good!</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Top Pages</h2>
+        <h3>Top 10 by Organic Traffic</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Page</th>
+                    <th>Sessions</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for page in tops %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ page.page | default('—') }}</td>
+                    <td>{{ page.sessions | default(0) }}</td>
+                    <td class="{{ 'positive' if page.change > 0 else 'negative' }}">
+                        {{ "+%.1f%%" % page.change if page.change > 0 else "%.1f%%" % page.change }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        Generated by SEO Automation System | {{ company_name }} | {{ generated_at }}
+    </div>
+</body>
+</html>

@@ -48,4 +48,3 @@ seo-automation/
 ├── requirements.txt
 ├── Makefile
 └── pyproject.toml
-``

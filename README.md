@@ -33,56 +33,21 @@
 
 ```bash
 seo-automation/
-├── airflow/
-│   └── dags/
-│       └── weekly_seo_report_dag.py
+├── airflow/dags/              # DAG-файлы
 ├── src/
 │   ├── config/
-│   │   ├── settings.py
-│   │   └── credentials.py
-│   ├── extractors/
-│   │   ├── gsc_client.py
-│   │   ├── ga4_client.py
-│   │   ├── yandex_metrika.py
-│   │   ├── yandex_webmaster.py
-│   │   └── google_sheets.py
+│   ├── extractors/            # GSC, GA4, Я.Метрика и т.д.
 │   ├── transformers/
-│   │   ├── normalizer.py
-│   │   ├── aggregator.py
-│   │   └── visibility_calculator.py
 │   ├── loaders/
-│   │   └── postgres_loader.py
 │   ├── analytics/
-│   │   ├── metrics.py
-│   │   ├── alerts.py
-│   │   └── tops.py
-│   ├── reporters/
-│   │   ├── pdf_generator.py
-│   │   ├── sheets_reporter.py
-│   │   └── telegram_bot.py
+│   ├── reporters/             # PDF, Telegram, Email
 │   └── utils/
-│       ├── logger.py
-│       └── date_helpers.py
-├── db/
-│   ├── migrations/
-│   └── schema.sql
-├── templates/
-│   └── pdf/
-│       ├── base.html
-│       ├── cover.html
-│       ├── dashboard.html
-│       ├── clusters.html
-│       ├── tops.html
-│       └── alerts.html
-├── docker/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── docs/
-│   ├── README.md
-│   ├── ARCHITECTURE.md
-│   ├── DEPLOYMENT.md
-│   └── TROUBLESHOOTING.md
+├── templates/pdf/             # HTML-шаблоны отчётов
+├── db/migrations/             # Alembic
+├── docker/                    # Dockerfile, docker-compose.yml
+├── docs/                      # Документация
+├── tests/
 ├── .env.example
 ├── requirements.txt
-├── pyproject.toml
-└── Makefile
+├── Makefile
+└── pyproject.toml

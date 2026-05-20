@@ -12,7 +12,7 @@
 
 **Статус:** MVP (Дни 1-2 ✅) | **Стек:** Python 3.11 · Airflow 2.8 · PostgreSQL 15 · Docker
 
-&lt;/div&gt;
+`&lt;/div&gt;
 
 ---
 

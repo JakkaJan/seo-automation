@@ -138,7 +138,7 @@ seo-automation/
 |YANDEX_METRIKA_COUNTER_ID|ID счётчика|Я.Метрика → Настройки|
 |YANDEX_WEBMASTER_TOKEN|OAuth токен|oauth.yandex.ru|
 
-
+## 🌪️ Airflow DAG
 ```bash
 ┌─────────────────────────────────────────────────────────┐
 │  extract_data (TaskGroup)                               │

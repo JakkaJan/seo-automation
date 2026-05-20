@@ -52,6 +52,22 @@ make setup
 ```bash
 make trigger
 ```
+| Команда | Описание |
+|:---|:---|
+|make setup|🚀 Полная настройка (init + up + status)|
+|make init|🏗️ Инициализация проекта (первый запуск)|
+|make up|▶️ Запустить все сервисы|
+|make down|⏹️ Остановить все сервисы|
+|make restart|🔄 Перезапустить|
+|make logs|📋 Смотреть логи всех сервисов|
+|make logs-web|🌐 Логи Airflow Webserver|
+|make trigger|⚡ Запустить DAG вручную|
+|make status|📊 Статус сервисов и DAGs|
+|make test|🧪 Запустить тесты|
+|make shell|🐚 Открыть shell в контейнере|
+|make db-shell|🐘 PostgreSQL CLI|
+|make backup|💾 Бэкап базы данных|
+|make clean|🧹 Удалить ВСЁ (включая данные!)|
 ```bash
 seo-automation/
 ├── 📄 Makefile                          # Все команды проекта

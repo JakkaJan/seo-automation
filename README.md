@@ -52,6 +52,7 @@ make setup
 ```bash
 make trigger
 ```
+## 🛠️ Команды Makefile
 | Команда | Описание |
 |:---|:---|
 |make setup|🚀 Полная настройка (init + up + status)|
@@ -68,6 +69,9 @@ make trigger
 |make db-shell|🐘 PostgreSQL CLI|
 |make backup|💾 Бэкап базы данных|
 |make clean|🧹 Удалить ВСЁ (включая данные!)|
+
+## 📁 Структура проекта
+
 ```bash
 seo-automation/
 ├── 📄 Makefile                          # Все команды проекта
@@ -117,3 +121,19 @@ seo-automation/
     └── test_extractors.py               # Unit-тесты
 
 ```
+## 🔧 Конфигурация
+
+| Переменная | Описание |Где взять|
+|:---|:---|:---|
+|GOOGLE_SERVICE_ACCOUNT_KEY|Путь к JSON ключу|Google Cloud Console|
+|GSC_SITE_URL|Сайт в GSC|sc-domain:example.com|
+|GA4_PROPERTY_ID|ID свойства GA4|GA4 Admin → Property Settings|
+|GOOGLE_SHEETS_URL|Таблица кластеров|Google Sheets URL|
+
+## 📁 СYandex APIs
+
+| Переменная | Описание |Где взять|
+|:---|:---|:---|
+|YANDEX_METRIKA_TOKEN|OAuth токен|oauth.yandex.ru|
+|YANDEX_METRIKA_COUNTER_ID|ID счётчика|Я.Метрика → Настройки|
+|YANDEX_WEBMASTER_TOKEN|OAuth токен|oauth.yandex.ru|

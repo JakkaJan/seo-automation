@@ -137,3 +137,30 @@ seo-automation/
 |YANDEX_METRIKA_TOKEN|OAuth токен|oauth.yandex.ru|
 |YANDEX_METRIKA_COUNTER_ID|ID счётчика|Я.Метрика → Настройки|
 |YANDEX_WEBMASTER_TOKEN|OAuth токен|oauth.yandex.ru|
+
+
+```bash
+┌─────────────────────────────────────────────────────────┐
+│  extract_data (TaskGroup)                               │
+│  ├── 🔍 extract_gsc        # Google Search Console      │
+│  ├── 📈 extract_ga4        # Google Analytics 4         │
+│  ├── 🇷🇺 extract_ym         # Яндекс.Метрика             │
+│  └── 📋 extract_clusters   # Google Sheets              │
+└──────────────────────┬──────────────────────────────────┘
+                       ↓
+              ┌────────────────┐
+              │ transform_data │  # Нормализация + агрегация
+              └───────┬────────┘
+                      ↓
+              ┌───────────────┐
+              │ generate_alerts│  # Проверка правил
+              └───────┬───────┘
+                      ↓
+              ┌───────────────┐
+              │ generate_report│  # PDF отчёт
+              └───────┬───────┘
+                      ↓
+              ┌───────────────────┐
+              │ send_notifications │  # Telegram + Email
+              └───────────────────┘
+```

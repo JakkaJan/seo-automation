@@ -33,5 +33,71 @@
 ```bash
 git clone https://github.com/YOUR_USERNAME/seo-automation.git
 cd seo-automation
+```
+2️⃣ Настрой окружение
+```bash
+cp .env.example .env
+nano .env
+```
+3️⃣ Запусти всё одной командой
+```bash
+make setup
+```
+4️⃣ Открой Airflow UI
+```bash
+🌐 http://localhost:8080
+👤 Логин: airflow / airflow
+```
+5️⃣ Запусти отчёт вручную
+```bash
+make trigger
+```
+```bash
+seo-automation/
+├── 📄 Makefile                          # Все команды проекта
+├── 🐳 docker-compose.yml                # Инфраструктура
+├── ⚙️ .env.example                      # Шаблон конфигурации
+├── 📦 pyproject.toml                    # Python metadata
+│
+├── 🐳 docker/
+│   └── Dockerfile                       # Кастомный образ Airflow
+│
+├── 🐘 db/
+│   └── schema.sql                       # Схема PostgreSQL (12 таблиц)
+│
+├── 🌪️ airflow/
+│   └── dags/
+│       └── weekly_seo_report.py         # Основной DAG
+│
+├── 💻 src/                              # Исходный код
+│   ├── ⚙️ config/
+│   │   └── settings.py                  # Настройки из .env
+│   ├── 🔌 extractors/
+│   │   ├── gsc_client.py                # Google Search Console
+│   │   ├── ga4_client.py                # Google Analytics 4
+│   │   ├── yandex_metrika.py            # Яндекс.Метрика
+│   │   ├── yandex_webmaster.py          # Яндекс.Вебмастер
+│   │   └── google_sheets.py             # Google Sheets (кластеры)
+│   ├── 🔄 transformers/
+│   │   └── visibility_calculator.py     # Псевдо-видимость
+│   ├── 💾 loaders/
+│   │   └── postgres_loader.py           # PostgreSQL операции
+│   ├── 📊 analytics/
+│   │   └── alerts.py                    # Алерт-движок
+│   └── 📄 reporters/
+│       ├── pdf_generator.py             # WeasyPrint PDF
+│       └── telegram_bot.py              # SEO Reports Bot
+│
+├── 🎨 templates/
+│   └── pdf/
+│       └── base.html                    # HTML-шаблон отчёта
+│
+├── 📚 docs/
+│   ├── ARCHITECTURE.md                  # Архитектура
+│   ├── DEPLOYMENT.md                    # Деплой
+│   └── TROUBLESHOOTING.md               # Решение проблем
+│
+└── 🧪 tests/
+    └── test_extractors.py               # Unit-тесты
 
-
+```

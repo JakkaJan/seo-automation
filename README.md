@@ -142,7 +142,7 @@ seo-automation/
 ```bash
 ┌─────────────────────────────────────────────────────────┐
 │  extract_data (TaskGroup)                               │
-│  ├── 🔍 extract_gsc        # Google Search Console      │
+│  ├── 🔍 extract_gsc        # Google Search Console     |
 │  ├── 📈 extract_ga4        # Google Analytics 4         │
 │  ├── 🇷🇺 extract_ym         # Яндекс.Метрика             │
 │  └── 📋 extract_clusters   # Google Sheets              │
@@ -152,15 +152,15 @@ seo-automation/
               │ transform_data │  # Нормализация + агрегация
               └───────┬────────┘
                       ↓
-              ┌───────────────┐
+              ┌────────────────┐
               │ generate_alerts│  # Проверка правил
-              └───────┬───────┘
-                      ↓
-              ┌───────────────┐
+              └────────┬───────┘
+                       ↓
+              ┌────────────────┐
               │ generate_report│  # PDF отчёт
-              └───────┬───────┘
-                      ↓
-              ┌───────────────────┐
+              └────────┬───────┘
+                       ↓
+              ┌────────────────────┐
               │ send_notifications │  # Telegram + Email
-              └───────────────────┘
+              └────────────────────┘
 ```
